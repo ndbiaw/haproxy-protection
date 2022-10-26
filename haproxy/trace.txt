@@ -1,0 +1,10 @@
+ts=%Ts.%ms
+h=%[hdr(host)]
+ip=%ci
+uag=%[req.fhdr(user-agent)]
+http=%HV
+tls=%[ssl_fc]
+tlsv=%sslv
+sni=%[ssl_fc_sni]
+vey_id=%[env(RAY_ID)]
+bucket=%[env(BUCKET_DURATION)]

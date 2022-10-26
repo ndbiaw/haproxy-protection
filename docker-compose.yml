@@ -1,0 +1,53 @@
+version: "3.9"
+services:
+
+  haproxy:
+    network_mode: host
+    ports:
+      - 80:80
+    build:
+      context: ./
+      dockerfile: haproxy/Dockerfile
+    volumes:
+      - ./haproxy/haproxy.cfg:/etc/haproxy/haproxy.cfg
+      - ./haproxy/ddos.map:/etc/haproxy/ddos.map
+      - ./haproxy/hosts.map:/etc/haproxy/hosts.map
+      - ./haproxy/backends.map:/etc/haproxy/backends.map
+      - ./haproxy/blocked.map:/etc/haproxy/blocked.map
+      - ./haproxy/whitelist.map:/etc/haproxy/whitelist.map
+      - ./haproxy/maintenance.map:/etc/haproxy/maintenance.map
+      - ./haproxy/trace.txt:/etc/haproxy/trace.txt
+      - ./src/scripts/:/etc/haproxy/scripts/
+      - ./src/libs/:/etc/haproxy/libs/
+      - ./haproxy/js/:/var/www/js/
+      - ./haproxy/html/maintenance.html:/var/www/html/maintenance.html
+    environment:
+      # These are the hcaptcha and recaptcha test keys, not leaking any dont worry :^)
+      - HCAPTCHA_SITEKEY=20000000-ffff-ffff-ffff-000000000002
+      - HCAPTCHA_SECRET=0x0000000000000000000000000000000000000000
+      #- RECAPTCHA_SECRET=6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
+      #- RECAPTCHA_SITEKEY=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+      - CAPTCHA_COOKIE_SECRET=changeme
+      - POW_COOKIE_SECRET=changeme
+      - HMAC_COOKIE_SECRET=changeme
+      - RAY_ID=docker
+      - BUCKET_DURATION=43200
+      - BACKEND_NAME=servers
+      - SERVER_PREFIX=websrv
+      - CHALLENGE_INCLUDES_IP=1
+      - POW_TIME=2
+      - POW_KB=512
+      - POW_DIFFICULTY=25
+      - TOR_CONTROL_PORT_PASSWORD=changeme
+
+  nginx:
+    ports:
+      - 81:80
+    image: "nginx:latest"
+    volumes:
+      - ./nginx:/usr/share/nginx/html
+
+#  tor:
+#    build:
+#      context: ./
+#      dockerfile: tor/Dockerfile
