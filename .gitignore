@@ -1,0 +1,4 @@
+tor/hidden_service/
+haproxy/*.pem
+haproxy/*.crt
+haproxy/dataplaneapi

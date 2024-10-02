@@ -1,3 +1,4 @@
+
 #
 # NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
 #
@@ -17,7 +18,8 @@ RUN set -eux; \
 		--uid 99 \
 		haproxy
 
-ENV HAPROXY_URL http://www.haproxy.org/download/2.6/src/snapshot/haproxy-ss-LATEST.tar.gz
+ENV HAPROXY_URL http://www.haproxy.org/download/3.0/src/snapshot/haproxy-ss-LATEST.tar.gz
+ENV DATAPLANEAPI_URL https://github.com/haproxytech/dataplaneapi/releases/download/v2.7.5/dataplaneapi_2.7.5_Linux_x86_64.tar.gz
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -eux; \
@@ -36,6 +38,11 @@ RUN set -eux; \
 		luarocks \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
+#	\
+#	wget -O dataplaneapi_Linux_x86_64.tar.gz "$DATAPLANEAPI_URL"; \
+#	tar -zxvf dataplaneapi_Linux_x86_64.tar.gz; \
+#	chmod +x build/dataplaneapi; \
+#	cp build/dataplaneapi /usr/local/bin/; \
 	\
 	wget -O haproxy.tar.gz "$HAPROXY_URL"; \
 #	echo "$HAPROXY_SHA256 *haproxy.tar.gz" | sha256sum -c; \
@@ -86,6 +93,7 @@ RUN set -eux; \
 # "graceful stop is triggered when the SIGUSR1 signal is sent to the haproxy process"
 STOPSIGNAL SIGUSR1
 
+ADD haproxy/dataplaneapi.yml /etc/haproxy/dataplaneapi.yml
 ADD haproxy/docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 RUN apt update && apt install -y git lua5.3 liblua5.3-dev argon2 libargon2-dev luarocks

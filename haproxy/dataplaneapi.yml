@@ -1,0 +1,28 @@
+---
+config_version: 2
+dataplaneapi:
+  host: 0.0.0.0
+  port: 2001
+  resources:
+    update_map_files: true
+    maps_dir: /etc/haproxy/map
+    ssl_certs_dir: /etc/haproxy/ssl
+  scheme:
+    - http
+  transaction:
+    transaction_dir: /tmp/haproxy
+  user:
+    - admin:
+      name: admin
+      insecure: true
+      password: admin
+haproxy:
+  config_file: /etc/haproxy/haproxy.cfg
+  haproxy_bin: /usr/local/sbin/haproxy
+  reload:
+    reload_cmd: service haproxy reload
+    restart_cmd: service haproxy restart
+    reload_delay: 5
+    reload_strategy: systemd
+mode: single
+name: basedflare

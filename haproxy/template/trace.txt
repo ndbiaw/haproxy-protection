@@ -1,0 +1,13 @@
+ts=%Ts.%ms
+h=%[hdr(host)]
+ip=%ci
+cc=%[req.hdr(X-Country-Code)]
+uag=%[req.fhdr(user-agent)]
+http=%HV
+tls=%[ssl_fc]
+tlsv=%sslv
+tlscip=%sslc
+tlssni=%[ssl_fc_sni]
+node_hn=%H
+node_id=%[env(RAY_ID)]
+expiry=%[env(CHALLENGE_EXPIRY)]
