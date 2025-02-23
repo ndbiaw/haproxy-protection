@@ -2,7 +2,8 @@
 
 For docker, these are in docker-compose.yml. For production deployments, add them to `/etc/default/haproxy`.
 
-NOTE: Use either HCAPTCHA_ or RECAPTHCA_, not both.
+NOTE: Use either HCAPTCHA\_ or RECAPTHCA_, not both.
+
 - HCAPTCHA_SITEKEY - your hcaptcha site key
 - HCAPTCHA_SECRET - your hcaptcha secret key
 - RECAPTCHA_SITEKEY - your recaptcha site key
@@ -24,7 +25,10 @@ NOTE: Use either HCAPTCHA_ or RECAPTHCA_, not both.
 
 #### Run in docker (for testing/development)
 
+You must use Docker Compose v2.
+
 Run docker compose:
+
 ```bash
 docker compose up
 ```
@@ -43,11 +47,13 @@ Requires HAProxy compiled with lua support, and version >=2.5 for the native lua
 - Copy/link [js](src/js) to `/etc/haproxy/js`.
 - Copy [map](haproxy/map) to `/etc/haproxy/map`.
 - Install argon2, and the lua argon2 module with luarocks:
+
 ```bash
 sudo apt install -y git lua5.3 liblua5.3-dev argon2 libargon2-dev luarocks
 sudo git config --global url."https://".insteadOf git:// #don't ask.
 sudo luarocks install argon2
 ```
+
 - Test your haproxy config, `sudo haproxy -c -V -f /etc/haproxy/haproxy.cfg`. You should see "Configuration file is valid".
 
 NOTE: the provided configuration is only an example. You are expected to customise it significantly or otherwise copy the relevant parts into your own haproxy config.
@@ -58,14 +64,18 @@ If you have problems, read the error messages before opening an issue that is si
 
 - Check the `bind` line comments. Switch to the one with `accept-proxy` and `option forwardfor`
 - To generate a tor control port password:
-```
+
+```bash
 $ tor --hash-password example
 16:0175C41DDD88C5EA605582C858BC08FA29014215F233479A99FE78EDED
 ```
+
 - Set `TOR_CONTROL_PORT_PASSWORD` env var to the same password (NOT the output hash)
 - Add to your torrc (where xxxx is the output of `tor --hash-password`):
-```
+
+```txt
 ControlPort 9051
 HashedControlPassword xxxxxxxxxxxxxxxxx
 ```
+
 - Don't forget to restart tor
