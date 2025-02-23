@@ -13,7 +13,7 @@ services:
       dockerfile: haproxy/Dockerfile
     volumes:
       - ./haproxy/haproxy.cfg:/etc/haproxy/haproxy.cfg
-      #- ./haproxy/dataplaneapi.yml:/etc/haproxy/dataplaneapi.yml
+      - ./haproxy/dataplaneapi.yml:/etc/haproxy/dataplaneapi.yml
       - ./haproxy/errors/:/etc/haproxy/errors/
       - ./haproxy/map/:/etc/haproxy/map/
       - ./haproxy/template/:/etc/haproxy/template/
@@ -21,7 +21,7 @@ services:
       - ./src/lua/libs/:/etc/haproxy/libs/
       - ./src/js/:/etc/haproxy/js/
       - ./src/locales/:/etc/haproxy/locales/
-      - ../../Documents/dataplaneapi/build/dataplaneapi:/usr/local/bin/dataplaneapi
+      #- ../../Documents/dataplaneapi/build/dataplaneapi:/usr/local/bin/dataplaneapi
     environment:
       # These are the hcaptcha and recaptcha test keys, not leaking any dont worry :^)
       - HAPROXY_MAXCONN=5000
